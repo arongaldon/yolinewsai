@@ -22,16 +22,16 @@ export default function Dashboard() {
 
     if (loading) {
         return (
-            <div className="loader-container glass-panel">
+            <div className="loader-container">
                 <div className="spinner"></div>
-                <p>Aggregating reliable sources...</p>
+                <p className="loader-text">Aggregating reliable sources...</p>
             </div>
         );
     }
 
     if (!data || !data.articles) {
         return (
-            <div className="glass-panel">
+            <div className="glass-panel animate-fly-in">
                 <h2>Failed to load news.</h2>
             </div>
         );
@@ -39,73 +39,56 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard">
-            <div className="glass-panel" style={{ marginBottom: '2rem' }}>
-                <h1>YoliNews Daily</h1>
-                <p style={{ fontSize: '1.2rem', color: 'var(--text-primary)', marginBottom: '1.5rem' }}>
+            <div className="glass-panel mb-4 animate-fly-in" style={{ animationDelay: '0ms' }}>
+                <h1>YoliNews <span className="text-gradient">Daily</span></h1>
+                <p className="mb-3" style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>
                     {data.summary?.overview}
                 </p>
 
-                <h3 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>Key Priorities</h3>
-                <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem', color: 'var(--text-secondary)' }}>
+                <h3 className="mb-2 text-gradient">Key Priorities</h3>
+                <ul className="bullet-list">
                     {data.summary?.keyPoints?.map((point: string, i: number) => (
-                        <li key={i} style={{ marginBottom: '0.5rem' }}>{point}</li>
+                        <li key={i}>{point}</li>
                     ))}
                 </ul>
             </div>
 
-            <h2 style={{ marginBottom: '1.5rem' }}>Top Verified Headlines</h2>
-            <div style={{ display: 'grid', gap: '1.5rem' }}>
-                {data.articles.map((article: any) => (
-                    <div key={article.id} className="glass-panel" style={{ padding: '1.5rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                            <h3 style={{ fontSize: '1.25rem', lineHeight: '1.4', flex: 1, marginRight: '1rem' }}>
-                                <a href={article.link} target="_blank" rel="noopener noreferrer" style={{ cursor: 'pointer' }}>
+            <h2 className="animate-fly-in" style={{ animationDelay: '100ms' }}>Top Verified Headlines</h2>
+            <div className="flex flex-col gap-6">
+                {data.articles.map((article: any, index: number) => (
+                    <div
+                        key={article.id}
+                        className="article-card animate-fly-in"
+                        style={{ animationDelay: `${150 + index * 50}ms` }}
+                    >
+                        <div className="flex justify-between items-start mb-2">
+                            <h3 className="w-full" style={{ paddingRight: '1rem', lineHeight: '1.4' }}>
+                                <a href={article.link} target="_blank" rel="noopener noreferrer" className="article-title-link">
                                     {article.title}
                                 </a>
                             </h3>
-                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <span style={{
-                                    padding: '4px 8px',
-                                    borderRadius: '12px',
-                                    fontSize: '0.75rem',
-                                    background: 'rgba(255,255,255,0.1)',
-                                    whiteSpace: 'nowrap'
-                                }}>
-                                    {article.source}
-                                </span>
+                            <div className="flex gap-2">
+                                <span className="badge badge-source">{article.source}</span>
                                 {article.isPaywalled && (
-                                    <span style={{
-                                        padding: '4px 8px',
-                                        borderRadius: '12px',
-                                        fontSize: '0.75rem',
-                                        background: 'rgba(245, 158, 11, 0.2)',
-                                        color: 'var(--warning)',
-                                        whiteSpace: 'nowrap'
-                                    }}>
+                                    <span className="badge badge-warning">
                                         $ Paywall
                                     </span>
                                 )}
                             </div>
                         </div>
 
-                        <p style={{ fontSize: '0.9rem', marginBottom: '1rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        <p className="mb-3 text-sm" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                             {article.contentSnippet}
                         </p>
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Bias Alignment:</span>
-                                <span style={{
-                                    padding: '2px 8px',
-                                    borderRadius: '12px',
-                                    fontSize: '0.85rem',
-                                    background: article.biasScore < -2 ? 'rgba(59, 130, 246, 0.2)' : article.biasScore > 2 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-                                    color: article.biasScore < -2 ? 'var(--accent-primary)' : article.biasScore > 2 ? 'var(--danger)' : 'var(--success)',
-                                }}>
+                        <div className="flex items-center justify-between" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm fw-500" style={{ color: 'var(--text-secondary)' }}>Bias Alignment:</span>
+                                <span className={`badge ${article.biasScore < -2 ? 'badge-left' : article.biasScore > 2 ? 'badge-right' : 'badge-center'}`}>
                                     {article.biasScore === 0 ? 'Center' : article.biasScore > 0 ? `Right (+${article.biasScore})` : `Left (${article.biasScore})`}
                                 </span>
                             </div>
-                            <a href={article.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                            <a href={article.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary text-sm">
                                 Read Full Story
                             </a>
                         </div>

@@ -56,70 +56,43 @@ export default function ChatAgent() {
     };
 
     return (
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 4rem)', position: 'sticky', top: '2rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                Agent Yoli
+        <div className="glass-panel flex-col" style={{ height: 'calc(100vh - 4rem)', position: 'sticky', top: '2rem' }}>
+            <h2 className="mb-4" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+                Agent <span className="text-gradient">Yoli</span>
             </h2>
 
             <div
                 ref={scrollRef}
-                style={{
-                    flex: 1,
-                    overflowY: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                    paddingRight: '0.5rem',
-                    marginBottom: '1rem'
-                }}
+                className="chat-container mb-4"
+                style={{ flex: 1, overflowY: 'auto' }}
             >
                 {messages.map((msg, i) => (
-                    <div key={i} style={{
-                        alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                        background: msg.role === 'user' ? 'linear-gradient(135deg, var(--accent-primary), var(--accent-purple))' : 'rgba(255, 255, 255, 0.05)',
-                        border: msg.role !== 'user' ? '1px solid var(--border-color)' : 'none',
-                        padding: '1rem',
-                        borderRadius: msg.role === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0',
-                        maxWidth: '85%',
-                        lineHeight: '1.5',
-                        fontSize: '0.95rem'
-                    }}>
+                    <div key={i} className={`message ${msg.role === 'user' ? 'message-user' : 'message-assistant'}`}>
                         {/* Simple markdown parsing for links in the chat */}
                         <div dangerouslySetInnerHTML={{
-                            __html: msg.content.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--accent-primary); text-decoration: underline;">$1</a>')
+                            __html: msg.content.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
                         }} />
                     </div>
                 ))}
                 {loading && (
-                    <div style={{ alignSelf: 'flex-start', background: 'rgba(255, 255, 255, 0.05)', padding: '1rem', borderRadius: '16px 16px 16px 0', fontSize: '0.9rem' }}>
-                        <span className="spinner" style={{ width: '20px', height: '20px', display: 'inline-block', borderWidth: '2px', marginRight: '8px', verticalAlign: 'middle' }}></span>
-                        Analyzing...
+                    <div className="message message-assistant flex items-center gap-3">
+                        <span className="spinner spinner-sm"></span>
+                        <span className="text-sm">Analyzing intel...</span>
                     </div>
                 )}
             </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+            <form onSubmit={handleSubmit} className="flex gap-3" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.25rem' }}>
                 <input
                     type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    placeholder="Ask me anything..."
-                    style={{
-                        flex: 1,
-                        background: 'var(--bg-surface)',
-                        border: '1px solid var(--border-color)',
-                        color: 'var(--text-primary)',
-                        padding: '1rem',
-                        borderRadius: '99px',
-                        fontFamily: 'inherit',
-                        outline: 'none',
-                        transition: 'border-color 0.2s'
-                    }}
-                    onFocus={e => e.target.style.borderColor = 'var(--accent-primary)'}
-                    onBlur={e => e.target.style.borderColor = 'var(--border-color)'}
+                    placeholder="Ask me anything about today's news..."
+                    className="input-premium"
+                    disabled={loading}
                 />
-                <button type="submit" className="btn btn-primary" style={{ width: '50px', height: '50px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }} disabled={loading}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <button type="submit" className="btn btn-primary btn-icon flex items-center justify-center flex-shrink-0" disabled={loading}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="22" y1="2" x2="11" y2="13"></line>
                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                     </svg>
