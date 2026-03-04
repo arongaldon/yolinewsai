@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "YoliNewsの日常",
+        "priorities": "重要な優先事項",
+        "topHeadlines": "トップ検証済みヘッドライン",
+        "failedLoad": "ニュースを読み込めませんでした。",
+        "loading": "信頼できる情報源を集めています...",
+        "readFullStory": "全文を読む",
+        "biasAlignment": "バイアスの偏り:",
+        "biasCenter": "中央",
+        "biasRight": "右",
+        "biasLeft": "左",
+        "paywall": "$ 有料"
+    },
+    "chatAgent": {
+        "title": "エージェントYoli",
+        "placeholder": "今日のニュースについて何でも聞いてください...",
+        "analyzing": "知能を分析中...",
+        "errorMsg": "申し訳ありません、脳への接続に問題が発生しました。後でもう一度お試しください。"
+    }
+}

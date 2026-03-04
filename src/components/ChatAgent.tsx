@@ -1,10 +1,14 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-export default function ChatAgent() {
-    const [messages, setMessages] = useState<{ role: string, content: string }[]>([
-        { role: 'assistant', content: "Hi! I'm Yoli. Ask me anything about today's news headlines." }
-    ]);
+export default function ChatAgent({ dict, lang }: { dict: any, lang: string }) {
+    const [messages, setMessages] = useState<{ role: string, content: string }[]>([]);
+
+    // Initialize the greeting message using the dictionary (done once)
+    useEffect(() => {
+        setMessages([{ role: 'assistant', content: dict.placeholder.replace('...', '!') }]);
+    }, [dict]);
+
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -13,7 +17,7 @@ export default function ChatAgent() {
 
     // Load news context
     useEffect(() => {
-        fetch('/api/news')
+        fetch(`/api/news?lang=${lang}`)
             .then(res => res.json())
             .then(data => setNewsContext(data))
             .catch(err => console.error(err));
@@ -40,7 +44,8 @@ export default function ChatAgent() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [...messages, userMessage].filter(m => m.role !== 'system'),
-                    context: newsContext
+                    context: newsContext,
+                    lang: lang
                 })
             });
 
@@ -49,7 +54,7 @@ export default function ChatAgent() {
             setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
         } catch (err) {
             console.error(err);
-            setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I had trouble reaching my brain. Try again later." }]);
+            setMessages(prev => [...prev, { role: 'assistant', content: dict.errorMsg }]);
         } finally {
             setLoading(false);
         }
@@ -58,7 +63,7 @@ export default function ChatAgent() {
     return (
         <div className="glass-panel flex-col" style={{ height: 'calc(100vh - 4rem)', position: 'sticky', top: '2rem' }}>
             <h2 className="mb-4" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                Agent <span className="text-gradient">Yoli</span>
+                {dict.title.split(' ')[0]} <span className="text-gradient">{dict.title.split(' ')[1] || ''}</span>
             </h2>
 
             <div
@@ -77,7 +82,7 @@ export default function ChatAgent() {
                 {loading && (
                     <div className="message message-assistant flex items-center gap-3">
                         <span className="spinner spinner-sm"></span>
-                        <span className="text-sm">Analyzing intel...</span>
+                        <span className="text-sm">{dict.analyzing}</span>
                     </div>
                 )}
             </div>
@@ -87,7 +92,7 @@ export default function ChatAgent() {
                     type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    placeholder="Ask me anything about today's news..."
+                    placeholder={dict.placeholder}
                     className="input-premium"
                     disabled={loading}
                 />

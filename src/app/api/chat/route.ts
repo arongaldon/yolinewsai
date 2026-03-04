@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { messages, context } = body;
+        const { messages, context, lang } = body;
 
         const apiKey = process.env.OPENAI_API_KEY;
 
@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       Use the provided news context to answer user questions, connect stories, and provide in-depth information.
       If a user asks for a link, provide the link formatted in markdown, and mention if it is paywalled based on the context.
       Make your answers informative, neutral, and reliable.
+      IMPORTANT: You MUST reply in the language specified by the locale code: ${lang || 'en'}.
       
       TODAY'S NEWS CONTEXT:
       ${JSON.stringify(context, null, 2)}

@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "YoliNews Täglich",
+        "priorities": "Schlüsselprioritäten",
+        "topHeadlines": "Top Verifizierte Schlagzeilen",
+        "failedLoad": "Fehler beim Laden der Nachrichten.",
+        "loading": "Sammeln zuverlässiger Quellen...",
+        "readFullStory": "Ganze Geschichte lesen",
+        "biasAlignment": "Voreingenommenheitsausrichtung:",
+        "biasCenter": "Mitte",
+        "biasRight": "Rechts",
+        "biasLeft": "Links",
+        "paywall": "$ Bezahlschranke"
+    },
+    "chatAgent": {
+        "title": "Agent Yoli",
+        "placeholder": "Frag mich alles über die heutigen Nachrichten...",
+        "analyzing": "Analysiere Informationen...",
+        "errorMsg": "Entschuldigung, ich hatte Probleme, mein Gehirn zu erreichen. Versuche es später noch einmal."
+    }
+}

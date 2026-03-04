@@ -1,14 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-export default function Dashboard() {
+export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadNews() {
             try {
-                const response = await fetch('/api/news');
+                const response = await fetch(`/api/news?lang=${lang}`);
                 const json = await response.json();
                 setData(json);
             } catch (err) {
@@ -24,7 +24,7 @@ export default function Dashboard() {
         return (
             <div className="loader-container">
                 <div className="spinner"></div>
-                <p className="loader-text">Aggregating reliable sources...</p>
+                <p className="loader-text">{dict.loading}</p>
             </div>
         );
     }
@@ -32,7 +32,7 @@ export default function Dashboard() {
     if (!data || !data.articles) {
         return (
             <div className="glass-panel animate-fly-in">
-                <h2>Failed to load news.</h2>
+                <h2>{dict.failedLoad}</h2>
             </div>
         );
     }
@@ -40,12 +40,12 @@ export default function Dashboard() {
     return (
         <div className="dashboard">
             <div className="glass-panel mb-4 animate-fly-in" style={{ animationDelay: '0ms' }}>
-                <h1>YoliNews <span className="text-gradient">Daily</span></h1>
+                <h1>{dict.title.split(' ')[0]} <span className="text-gradient">{dict.title.split(' ')[1] || ''}</span></h1>
                 <p className="mb-3" style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>
                     {data.summary?.overview}
                 </p>
 
-                <h3 className="mb-2 text-gradient">Key Priorities</h3>
+                <h3 className="mb-2 text-gradient">{dict.priorities}</h3>
                 <ul className="bullet-list">
                     {data.summary?.keyPoints?.map((point: string, i: number) => (
                         <li key={i}>{point}</li>
@@ -53,7 +53,7 @@ export default function Dashboard() {
                 </ul>
             </div>
 
-            <h2 className="animate-fly-in" style={{ animationDelay: '100ms' }}>Top Verified Headlines</h2>
+            <h2 className="animate-fly-in" style={{ animationDelay: '100ms' }}>{dict.topHeadlines}</h2>
             <div className="flex flex-col gap-6">
                 {data.articles.map((article: any, index: number) => (
                     <div
@@ -71,7 +71,7 @@ export default function Dashboard() {
                                 <span className="badge badge-source">{article.source}</span>
                                 {article.isPaywalled && (
                                     <span className="badge badge-warning">
-                                        $ Paywall
+                                        {dict.paywall}
                                     </span>
                                 )}
                             </div>
@@ -83,13 +83,13 @@ export default function Dashboard() {
 
                         <div className="flex items-center justify-between" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
                             <div className="flex items-center gap-2">
-                                <span className="text-sm fw-500" style={{ color: 'var(--text-secondary)' }}>Bias Alignment:</span>
+                                <span className="text-sm fw-500" style={{ color: 'var(--text-secondary)' }}>{dict.biasAlignment}</span>
                                 <span className={`badge ${article.biasScore < -2 ? 'badge-left' : article.biasScore > 2 ? 'badge-right' : 'badge-center'}`}>
-                                    {article.biasScore === 0 ? 'Center' : article.biasScore > 0 ? `Right (+${article.biasScore})` : `Left (${article.biasScore})`}
+                                    {article.biasScore === 0 ? dict.biasCenter : article.biasScore > 0 ? `${dict.biasRight} (+${article.biasScore})` : `${dict.biasLeft} (${article.biasScore})`}
                                 </span>
                             </div>
                             <a href={article.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary text-sm">
-                                Read Full Story
+                                {dict.readFullStory}
                             </a>
                         </div>
                     </div>

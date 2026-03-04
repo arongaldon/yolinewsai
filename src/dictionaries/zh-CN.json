@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "YoliNews 每日",
+        "priorities": "关键优先事项",
+        "topHeadlines": "顶级验证头条新闻",
+        "failedLoad": "加载新闻失败。",
+        "loading": "正在汇总可靠来源...",
+        "readFullStory": "阅读全文",
+        "biasAlignment": "偏见倾向:",
+        "biasCenter": "中立",
+        "biasRight": "偏右",
+        "biasLeft": "偏左",
+        "paywall": "$ 付费墙"
+    },
+    "chatAgent": {
+        "title": "特工 Yoli",
+        "placeholder": "问我关于今天新闻的任何事情...",
+        "analyzing": "正在分析情报...",
+        "errorMsg": "抱歉，我访问我的大脑时遇到问题。请稍后再试。"
+    }
+}

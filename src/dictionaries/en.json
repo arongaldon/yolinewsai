@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "YoliNews Daily",
+        "priorities": "Key Priorities",
+        "topHeadlines": "Top Verified Headlines",
+        "failedLoad": "Failed to load news.",
+        "loading": "Aggregating reliable sources...",
+        "readFullStory": "Read Full Story",
+        "biasAlignment": "Bias Alignment:",
+        "biasCenter": "Center",
+        "biasRight": "Right",
+        "biasLeft": "Left",
+        "paywall": "$ Paywall"
+    },
+    "chatAgent": {
+        "title": "Agent Yoli",
+        "placeholder": "Ask me anything about today's news...",
+        "analyzing": "Analyzing intel...",
+        "errorMsg": "Sorry, I had trouble reaching my brain. Try again later."
+    }
+}

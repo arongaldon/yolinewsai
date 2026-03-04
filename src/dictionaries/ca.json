@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "YoliNews Diari",
+        "priorities": "Prioritats Clau",
+        "topHeadlines": "Principals Titulars Verificats",
+        "failedLoad": "No s'han pogut carregar les notícies.",
+        "loading": "Agregant fonts fiables...",
+        "readFullStory": "Llegir Història Completa",
+        "biasAlignment": "Alineació de Biaix:",
+        "biasCenter": "Centre",
+        "biasRight": "Dreta",
+        "biasLeft": "Esquerra",
+        "paywall": "$ Mur de pagament"
+    },
+    "chatAgent": {
+        "title": "Agent Yoli",
+        "placeholder": "Pregunta'm qualsevol cosa sobre les notícies d'avui...",
+        "analyzing": "Analitzant intel·ligència...",
+        "errorMsg": "Ho sento, he tingut problemes per accedir al meu cervell. Torna-ho a provar més tard."
+    }
+}

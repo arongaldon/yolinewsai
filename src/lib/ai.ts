@@ -14,7 +14,7 @@ export interface DailySummary {
     keyPoints: string[];
 }
 
-export async function processArticles(articles: FeedArticle[]): Promise<{
+export async function processArticles(articles: FeedArticle[], lang: string = 'en'): Promise<{
     processed: ProcessedArticle[],
     summary: DailySummary
 }> {
@@ -23,7 +23,7 @@ export async function processArticles(articles: FeedArticle[]): Promise<{
 
     if (!apiKey) {
         console.warn("No OPENAI_API_KEY found. Using mock AI processing logic.");
-        return mockProcess(articles);
+        return mockProcess(articles, lang);
     }
 
     try {
@@ -36,6 +36,8 @@ export async function processArticles(articles: FeedArticle[]): Promise<{
     2. Bias analysis: Assign a bias score from -10 (far left) to 10 (far right), with 0 being neutral, based on title/source. Provide a 1-sentence reasoning.
     3. Generate a daily summary: An engaging overview paragraph and 3-5 key points representing today's most important distinct stories.
     4. Paywall detection: Heuristically guess if the source commonly uses hard paywalls (return true/false).
+    
+    IMPORTANT: You MUST write the 'summary.overview', 'summary.keyPoints', and 'biasReasoning' entirely in the language specified by the locale code: ${lang}.
     
     Return pure JSON with the following structure:
     {
@@ -98,7 +100,7 @@ export async function processArticles(articles: FeedArticle[]): Promise<{
     }
 }
 
-function mockProcess(articles: FeedArticle[]) {
+function mockProcess(articles: FeedArticle[], lang: string = 'en') {
     const processed = articles.map((article, i) => ({
         ...article,
         id: `art_${i}_${Date.now()}`,
@@ -108,7 +110,7 @@ function mockProcess(articles: FeedArticle[]) {
         isPaywalled: article.source === 'Reuters' // Example heuristic
     }));
 
-    const summary = {
+    let summary = {
         overview: "Today's news highlights significant global events including political developments, economic shifts, and ongoing conflicts. Authorities are responding to emerging crises while international negotiations continue.",
         keyPoints: [
             articles[0]?.title || "Major global policy update announced.",
@@ -116,6 +118,12 @@ function mockProcess(articles: FeedArticle[]) {
             articles[2]?.title || "Significant developments in ongoing international conflict."
         ]
     };
+
+    if (lang === 'es-ES') {
+        summary.overview = "Las noticias de hoy destacan eventos globales significativos...";
+    } else if (lang === 'ja') {
+        summary.overview = "今日のニュースは、政治的進展を含む重要な世界的な出来事を強調しています。";
+    }
 
     return { processed, summary };
 }
