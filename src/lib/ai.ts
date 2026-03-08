@@ -42,9 +42,9 @@ export async function processArticles(articles: FeedArticle[], lang: string = 'e
     3. Categorization & Importance: Assign a general category (e.g., "Politics", "World", "Technology", "Business", "Sports", "Science", "Entertainment", "Health") and a global importance score from 1 to 10 (10 being world-changing news, 1 being trivial).
     4. Generate a daily summary: An engaging overview paragraph and 3-5 key points representing today's most important distinct stories.
     5. Paywall detection: Heuristically guess if the source commonly uses hard paywalls (return true/false).
-    6. Translation & Language Detection: Identify the ISO 639-1 language code (e.g. 'en', 'fr') of the original article. Translate the 'title' and 'snippet' to the exact target locale: ${lang}.
+    6. Translation & Language Detection: Identify the ISO 639-1 language code (e.g. 'en', 'fr') of the original article. If the original language matches the base target locale (${lang}) (e.g., both are Spanish, both English), DO NOT translate the 'title' and 'snippet', return them exactly as they are. Otherwise, translate the 'title' and 'snippet' to the exact target locale: ${lang}.
     
-    IMPORTANT: You MUST write the 'summary.overview', 'summary.keyPoints', 'biasReasoning', 'translatedTitle', and 'translatedSnippet' entirely in the language specified by the locale code: ${lang}.
+    IMPORTANT: You MUST write the 'summary.overview', 'summary.keyPoints', and 'biasReasoning' entirely in the language specified by the locale code: ${lang}.
     
     Return pure JSON with the following structure:
     {
@@ -128,8 +128,8 @@ function mockProcess(articles: FeedArticle[], lang: string = 'en') {
         category: ['World', 'Politics', 'Technology', 'Sports'][Math.floor(Math.random() * 4)],
         importanceScore: Math.floor(Math.random() * 10) + 1,
         originalLanguage: 'en',
-        translatedTitle: lang.startsWith('es') ? `[Traducido] ${article.title}` : article.title,
-        translatedSnippet: lang.startsWith('es') ? `(Este es un fragmento simulado ya que no hay clave API configurada. La noticia original trata sobre eventos recientes en ${article.source}.)` : article.contentSnippet
+        translatedTitle: article.title,
+        translatedSnippet: article.contentSnippet
     }));
 
     let summary = {
