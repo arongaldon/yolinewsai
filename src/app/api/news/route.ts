@@ -5,7 +5,7 @@ import { processArticles } from '@/lib/ai';
 // Cache the response in memory for 15 minutes to avoid hitting APIs too often
 let cachedNews: any = null;
 let lastFetchTime: number = 0;
-const CACHE_DURATION = 15 * 60 * 1000;
+const CACHE_DURATION = 0; // Temporarily force clear cache
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 
     // Create a cache key that includes the language so we don't serve english to spanish users
     const cacheKey = `news_${lang}`;
-
+    
     const now = Date.now();
     if (cachedNews && cachedNews[cacheKey] && (now - lastFetchTime) < CACHE_DURATION) {
         return NextResponse.json(cachedNews[cacheKey]);

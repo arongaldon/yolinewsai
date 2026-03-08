@@ -61,20 +61,33 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
                         className="article-card animate-fly-in"
                         style={{ animationDelay: `${150 + index * 50}ms` }}
                     >
-                        <div className="flex justify-between items-start mb-2">
-                            <h3 className="w-full" style={{ paddingRight: '1rem', lineHeight: '1.4' }}>
-                                <a href={article.link} target="_blank" rel="noopener noreferrer" className="article-title-link">
-                                    {article.title}
-                                </a>
-                            </h3>
-                            <div className="flex gap-2">
-                                <span className="badge badge-source">{article.source}</span>
-                                {article.isPaywalled && (
-                                    <span className="badge badge-warning">
-                                        {dict.paywall}
+                        <div className="flex justify-between items-start mb-3 gap-4">
+                            <div className="flex-1 min-w-0">
+                                <h3 className="mb-2" style={{ lineHeight: '1.4' }}>
+                                    <a href={article.link} target="_blank" rel="noopener noreferrer" className="article-title-link">
+                                        {article.title}
+                                    </a>
+                                </h3>
+                                <div className="flex gap-2 items-center flex-wrap">
+                                    <span className="badge badge-source">{article.source}</span>
+                                    <span className="text-xs" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                                        {new Date(article.pubDate).toLocaleString(lang, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                     </span>
-                                )}
+                                    {article.isPaywalled && (
+                                        <span className="badge badge-warning">
+                                            {dict.paywall}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
+                            {article.image && (
+                                <img 
+                                    src={article.image} 
+                                    alt="" 
+                                    loading="lazy"
+                                    style={{ width: '120px', height: '84px', objectFit: 'cover', borderRadius: '12px', flexShrink: 0, border: '1px solid var(--border-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                />
+                            )}
                         </div>
 
                         <p className="mb-3 text-sm" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
