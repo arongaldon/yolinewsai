@@ -7,6 +7,8 @@ export interface ProcessedArticle extends FeedArticle {
     duplicateOfId?: string;
     id: string; // generate unique id
     isPaywalled: boolean;
+    category: string; // e.g. "Politics", "Technology", "Sports", etc.
+    importanceScore: number; // 1 to 10
 }
 
 export interface DailySummary {
@@ -34,8 +36,9 @@ export async function processArticles(articles: FeedArticle[], lang: string = 'e
     Tasks:
     1. Detect duplicates: Identify stories covering the exactly same event. Mark secondary articles as duplicates.
     2. Bias analysis: Assign a bias score from -10 (far left) to 10 (far right), with 0 being neutral, based on title/source. Provide a 1-sentence reasoning.
-    3. Generate a daily summary: An engaging overview paragraph and 3-5 key points representing today's most important distinct stories.
-    4. Paywall detection: Heuristically guess if the source commonly uses hard paywalls (return true/false).
+    3. Categorization & Importance: Assign a general category (e.g., "Politics", "World", "Technology", "Business", "Sports", "Science", "Entertainment", "Health") and a global importance score from 1 to 10 (10 being world-changing news, 1 being trivial).
+    4. Generate a daily summary: An engaging overview paragraph and 3-5 key points representing today's most important distinct stories.
+    5. Paywall detection: Heuristically guess if the source commonly uses hard paywalls (return true/false).
     
     IMPORTANT: You MUST write the 'summary.overview', 'summary.keyPoints', and 'biasReasoning' entirely in the language specified by the locale code: ${lang}.
     
@@ -47,7 +50,9 @@ export async function processArticles(articles: FeedArticle[], lang: string = 'e
           "biasScore": 0,
           "biasReasoning": "string",
           "isDuplicate": false,
-          "isPaywalled": false
+          "isPaywalled": false,
+          "category": "string",
+          "importanceScore": 5
         }
       ],
       "summary": {
@@ -85,7 +90,9 @@ export async function processArticles(articles: FeedArticle[], lang: string = 'e
                 biasScore: match?.biasScore || 0,
                 biasReasoning: match?.biasReasoning || 'Error calculating bias',
                 isDuplicate: match?.isDuplicate || false,
-                isPaywalled: match?.isPaywalled || false
+                isPaywalled: match?.isPaywalled || false,
+                category: match?.category || 'General',
+                importanceScore: match?.importanceScore || 5
             };
         });
 
@@ -107,7 +114,9 @@ function mockProcess(articles: FeedArticle[], lang: string = 'en') {
         biasScore: Math.floor(Math.random() * 21) - 10,
         biasReasoning: 'Mock evaluation: based on generic sentiment analysis.',
         isDuplicate: false, // Keeping mock simple, assuming no duplicates
-        isPaywalled: article.source === 'Reuters' // Example heuristic
+        isPaywalled: article.source === 'Reuters', // Example heuristic
+        category: ['World', 'Politics', 'Technology', 'Sports'][Math.floor(Math.random() * 4)],
+        importanceScore: Math.floor(Math.random() * 10) + 1
     }));
 
     let summary = {

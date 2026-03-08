@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [preferences, setPreferences] = useState<Record<string, number>>({});
 
     useEffect(() => {
         async function loadNews() {
@@ -17,8 +18,29 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
                 setLoading(false);
             }
         }
+
+        const savedPrefs = localStorage.getItem('yoli_prefs');
+        if (savedPrefs) {
+            try {
+                setPreferences(JSON.parse(savedPrefs));
+            } catch (e) {}
+        }
+
         loadNews();
-    }, []);
+    }, [lang]);
+
+    const handleNotInterested = (category: string | undefined, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!category) return;
+        
+        const newPrefs = { ...preferences };
+        // Reduce probability of seeing this category by applying a negative score penalty
+        newPrefs[category] = (newPrefs[category] || 0) - 3;
+        
+        setPreferences(newPrefs);
+        localStorage.setItem('yoli_prefs', JSON.stringify(newPrefs));
+    };
 
     if (loading) {
         return (
@@ -55,9 +77,22 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
 
             <h2 className="animate-fly-in" style={{ animationDelay: '100ms' }}>{dict.topHeadlines}</h2>
             <div className="flex flex-col gap-6">
-                {data.articles.map((article: any, index: number) => (
-                    <div
-                        key={article.id}
+                {(() => {
+                    let displayArticles = data?.articles ? [...data.articles] : [];
+                    displayArticles = displayArticles
+                        .map(a => {
+                            const prefScore = preferences[a.category || 'General'] || 0;
+                            const score = (a.importanceScore || 5) + prefScore;
+                            // Filter out if score is too low, UNLESS importance is >= 8
+                            const isHidden = score < 0 && (a.importanceScore || 5) < 8;
+                            return { ...a, _sortScore: score, _isHidden: isHidden };
+                        })
+                        .filter(a => !a._isHidden)
+                        .sort((a, b) => b._sortScore - a._sortScore);
+                        
+                    return displayArticles.map((article: any, index: number) => (
+                        <div
+                            key={article.id}
                         className="article-card animate-fly-in"
                         style={{ animationDelay: `${150 + index * 50}ms` }}
                     >
@@ -105,8 +140,28 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
                                 {dict.readFullStory}
                             </a>
                         </div>
+                        
+                        <div className="flex items-center gap-2 mt-4 pt-2">
+                            <span className="badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)' }}>
+                                {article.category || 'General'}
+                            </span>
+                            {article.importanceScore >= 8 && (
+                                <span className="text-xs" style={{ color: 'var(--warning)', fontWeight: 'bold' }}>
+                                    ⚡ {lang.startsWith('es') ? 'Importante' : 'Important'}
+                                </span>
+                            )}
+                            <div style={{ flex: 1 }}></div>
+                            <button
+                                onClick={(e) => handleNotInterested(article.category, e)}
+                                className="btn btn-icon"
+                                style={{ width: 'auto', padding: '0.3rem 0.8rem', height: 'auto', fontSize: '0.75rem', borderRadius: '99px', background: 'transparent', border: '1px solid var(--border-color)' }}
+                                title={dict.notInterested || (lang.startsWith('es') ? 'No me interesan' : 'Not interested')}
+                            >
+                                ✕ {(lang.startsWith('es') ? 'Menos como esto' : 'Show less like this')}
+                            </button>
+                        </div>
                     </div>
-                ))}
+                ))})()}
             </div>
         </div>
     );

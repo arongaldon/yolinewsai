@@ -8,6 +8,7 @@ Welcome to **YoliNews AI**, a modern, intelligent news aggregator built with Nex
 
 - **AI-Powered Analysis**: Uses OpenAI (GPT-4o-mini) to automatically generate a daily news summary, identify the 3-5 most critical global events, and evaluate the political bias (Left/Center/Right) of each article.
 - **Smart Deduplication**: The AI detects stories covering the exact same event and groups them, saving you from reading repetitive headlines.
+- **Personalized Feed (Implicit Feedback)**: The AI intelligently assigns categories and importance scores (1-10) to every article. You can dismiss topics you aren't interested in ("Show less like this"), which dynamically adjusts the local feed algorithm to filter out those categories in the future—unless a breaking news event hits exceptionally high global importance.
 - **Advanced RSS Extraction**: Aggregates news natively from `AP News`, `NYT World`, `NPR`, and `BBC News`. It intelligently extracts relevant thumbnails and images even when feeds hide them in complex XML tags!
 - **Multilingual Support**: Fully localized in English (`en`), Spanish (`es-ES`), Catalan (`ca`), German (`de`), Japanese (`ja`), and Simplified Chinese (`zh-CN`). It automatically detects your browser's language.
 - **Premium UI/UX Design**: Built with a stunning dark-mode glassmorphism aesthetic, subtle background parallax animations, dynamic gradients, and smooth card hover effects.
