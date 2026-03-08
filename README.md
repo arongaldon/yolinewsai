@@ -10,7 +10,7 @@ Welcome to **YoliNews AI**, a modern, intelligent news aggregator built with Nex
 - **Smart Deduplication**: The AI detects stories covering the exact same event and groups them, saving you from reading repetitive headlines.
 - **Personalized Feed (Implicit Feedback)**: The AI intelligently assigns categories and importance scores (1-10) to every article. You can dismiss topics you aren't interested in ("Show less like this"), which dynamically adjusts the local feed algorithm to filter out those categories in the future—unless a breaking news event hits exceptionally high global importance.
 - **Advanced RSS Extraction**: Aggregates news natively from `AP News`, `NYT World`, `NPR`, and `BBC News`. It intelligently extracts relevant thumbnails and images even when feeds hide them in complex XML tags!
-- **Multilingual Support**: Fully localized in English (`en`), Spanish (`es-ES`), Catalan (`ca`), German (`de`), Japanese (`ja`), and Simplified Chinese (`zh-CN`). It automatically detects your browser's language.
+- **Multilingual Support & Auto-Translation**: Fully localized interface in English (`en`), Spanish (`es-ES`), Catalan (`ca`), German (`de`), Japanese (`ja`), and Simplified Chinese (`zh-CN`). The AI detects the original language of the source and **automatically translates titles and snippets** into your browser's preferred language, displaying the original language code natively.
 - **Premium UI/UX Design**: Built with a stunning dark-mode glassmorphism aesthetic, subtle background parallax animations, dynamic gradients, and smooth card hover effects.
 - **Paywall Detection**: Automatically flags articles that are likely hidden behind a paywall so you know before you click.
 - **Performance Optimized**: Uses severe edge-caching to prevent hitting the OpenAI API excessively.
@@ -93,4 +93,4 @@ Vercel will build your app and give you a live URL. Every time you push a new ch
 
 ---
 
-*Created with ❤️ by Aron Galdon / YoliNews AI Team*
+Created with ❤️ by Aron Galdon / YoliNews AI Team

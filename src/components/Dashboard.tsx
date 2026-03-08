@@ -100,11 +100,16 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
                             <div className="flex-1 min-w-0">
                                 <h3 className="mb-2" style={{ lineHeight: '1.4' }}>
                                     <a href={article.link} target="_blank" rel="noopener noreferrer" className="article-title-link">
-                                        {article.title}
+                                        {article.translatedTitle || article.title}
                                     </a>
                                 </h3>
                                 <div className="flex gap-2 items-center flex-wrap">
                                     <span className="badge badge-source">{article.source}</span>
+                                    {article.originalLanguage && (
+                                        <span className="badge" style={{ backgroundColor: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
+                                            {article.originalLanguage.toUpperCase()}
+                                        </span>
+                                    )}
                                     <span className="text-xs" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                         {new Date(article.pubDate).toLocaleString(lang, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                     </span>
@@ -126,7 +131,7 @@ export default function Dashboard({ dict, lang }: { dict: any, lang: string }) {
                         </div>
 
                         <p className="mb-3 text-sm" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {article.contentSnippet}
+                            {article.translatedSnippet || article.contentSnippet}
                         </p>
 
                         <div className="flex items-center justify-between" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
