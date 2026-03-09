@@ -56,20 +56,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the r
 
 The easiest way to deploy this Next.js app to the world is using **Vercel**, the creators of Next.js.
 
-### 1. Push to GitHub
-
-1. Create a new repository on your GitHub account.
-2. Push your local project to the GitHub repo:
-
-   ```bash
-   git add .
-   git commit -m "Initial commit - YoliNews AI"
-   git branch -M main
-   git remote add origin https://github.com/yourusername/yolinewsai.git
-   git push -u origin main
-   ```
-
-### 2. Connect to Vercel
+### Connect to Vercel
 
 1. Go to [Vercel.com](https://vercel.com/) and sign up/log in with your GitHub account.
 2. Click **"Add New" > "Project"**.
